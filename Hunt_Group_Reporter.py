@@ -11,7 +11,7 @@ import time
 import sys
 
 ## CLI switches
-parser = argparse.ArgumentParser(prog='gateway', description='Reports on a hunt group for the length of Cisco cdr file')
+parser = argparse.ArgumentParser(prog='Hunt_Group_Reporter.py', description='Reports on a hunt group for the length of Cisco cdr file')
 parser.add_argument('--input', required=True, help='CDR file input(must be csv)')
 parser.add_argument('--huntgroup', required=True, help='extension of the hunt group')
 
