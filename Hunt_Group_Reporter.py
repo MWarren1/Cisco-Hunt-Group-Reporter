@@ -37,6 +37,7 @@ parsedoutput.write("dateTimeOrigination,dateTimeConnect,dateTimeDisconnect,Durat
 ## 47 - dateTimeConnect
 ## 48 - dateTimeDisconnect
 ## 55 - Duration
+## 30 - finalCalledPartyNumber
 ## 31 - finalCalledPartyUnicodeLoginUserID
 ## 101 - huntPilotDN
 #### Opens and parses cdr extracting only records with the gateway
@@ -46,11 +47,12 @@ lastrecord = 0
 totalagents = 0
 totalduration = 0
 totalcalls = 0
+totalmissedcalls = 0
 with open(args.input, 'Ur') as f:
 	print "Collecting all records for " + huntgroup + "\n\n"
 	parserreader = csv.reader(f)
 	for row in parserreader:
-		if row[101] == huntgroup:
+		if row[30] == huntgroup:
 			totalduration = totalduration + int(row[55])
 			totalcalls = totalcalls + 1
 			## finding longest call
@@ -62,7 +64,8 @@ with open(args.input, 'Ur') as f:
 			## finding last call
 			if int(row[48]) >= lastrecord:
 				lastrecord = int(row[48])
-			
+			if int(row[55]) == 0:
+				totalmissedcalls = totalmissedcalls + 1
 			## extracting call records
 			parsedoutput.write(row[4]+","+row[47]+","+row[48]+","+row[55]+","+row[31]+"\n")
 parsedoutput.close()
@@ -138,4 +141,5 @@ while currentagent <= totalagents:
 ## Last part of Report
 output.write("\n")
 output.write("Total Calls,"+str(totalcalls)+"\n")
+output.write("Total Missed Calls,"+str(totalmissedcalls)+"\n")
 output.write("Average DurationCalls Taken(Seconds),,"+str(averageduration)+"\n")
